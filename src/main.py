@@ -34,16 +34,8 @@ def navigation_bar(title: str = ''):
     links = 'align-middle w-full text-black text-lg p-2 m-0 hover:bg-orange-200 hover:cursor-pointer'
     icons = 'text-3xl p-1 w-[16dp] rounded hover:bg-orange-700 hover:cursor-pointer'
     with ui.header(elevated=True).classes('text-white bg-[#FA812F] items-center h-[60px] justify-between'):
-        ui.icon('menu').on('click', lambda: menu.toggle()).classes(icons).tooltip('Menu')
         ui.label(title).classes('text-2xl truncate flex-[2] hover:cursor-default').tooltip(title)
         ui.icon('home').on('click', lambda: ui.navigate.to(f'/ricette')).classes(icons).tooltip('Home')
-
-    
-    with ui.left_drawer(fixed=False, elevated=True)\
-                .classes('bg-orange-100 h-full w-full') \
-                .props('bordered overlay show-if-above=false') as menu:
-            with ui.column().classes('gap-y-2 w-full'):
-                ui.link('Ricette', f'/ricette').classes(replace=links)
 
 def main():
     ui.navigate.to('/ricette')

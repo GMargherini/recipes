@@ -34,6 +34,12 @@ def set_recipe(recipe):
     if not exists:
         _recipes.append(Recipe.encode(recipe))
         
+def delete_recipe(recipe_id):
+    for i in range(len(_recipes)):
+        if _recipes[i]['id'] == recipe_id:
+            _recipes.pop(i)
+        save_recipes()
+
 def get_recipes_refs():
     _recipes = import_recipes()
     return [{'id':r['id'], 'name':r['name'], 'course':r['course']} for r in _recipes]

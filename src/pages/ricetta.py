@@ -1,18 +1,22 @@
 from nicegui import ui
 from data.recipe import Recipe
 from data.ingredient import Ingredient
-from data.database import save_recipes, set_recipe
+from data.database import save_recipes, set_recipe, delete_recipe
 
+def remove_recipe(recipe_id):
+    delete_recipe(recipe_id)
+    ui.navigate.to(f'/ricette/')
 
 def ricetta_page(recipe):
     with ui.row().classes('w-full'):
         ui.space()
         ui.button(icon='edit', on_click= lambda: ui.navigate.to(f'/ricetta/{recipe.id}/modifica'))
+        ui.button(icon='delete', on_click= lambda: remove_recipe(recipe.id))
     with ui.card().classes('w-full'):
         with ui.column():
             ui.label(recipe.name.title())
             with ui.row():
-                ui.label(f'Porzioni: {recipe.serves} persone')
+                ui.label(f'Porzioni: {recipe.serves}')
             ui.separator()
 
             ui.label('Ingredienti')
@@ -29,25 +33,25 @@ def save_recipe(recipe):
     set_recipe(recipe)
     save_recipes()
     ui.notify('Ricetta Salvata')
-    ui.navigate.to('/ricette')
+    ui.navigate.to(f'/ricetta/{recipe.id}')
 
-def add_step():
-    pass
+def add_step(steps, container):
+    steps.append(step_item(steps, len(steps) if steps else 0, container))
 
-def delete_step():
-    pass
+def delete_step(steps, container, num):
+    if list(container) and steps:
+        steps.pop(num)
+        container.remove(num)
+    return steps
 
 def add_ingredient(ingrs, container):
-    #remove_add_button(container)
     ingrs.append(ingredient_item(ingrs, len(ingrs) if ingrs else 0, container))
-    print(ingrs)
-    #add_button(add_ingredient, ingrs, container)
 
 def delete_ingredient(ingrs, container, num):
     if list(container) and ingrs:
-        ingrs = ingrs.pop(num)
-        print(container, num)
+        ingrs.pop(num)
         container.remove(num)
+    return ingrs
 
 def remove_add_button(container):
     if list(container):
@@ -58,6 +62,27 @@ def add_button(function, data, container):
         with ui.row().classes('w-full'):
             ui.space()
             ui.button(icon='add', on_click= lambda: function(data, container))
+
+def set_step(steps, num, string):
+    if num < len(steps):
+        steps[num] = string
+    else:
+        steps.append(string)
+
+def update_steps(steps, new_steps):
+    steps = new_steps
+
+def step_item(steps, num, container):
+    with container:
+        step = steps[num] if num < len(steps) else ''
+        with ui.card().classes('w-full'):
+            ui.label(f'Passo {num+1}')
+            ui.textarea(value=step).classes('w-full').on("update:model-value", lambda e: set_step(steps, num, e.args))
+            if num > 0:
+                with ui.row().classes('w-full'):
+                    ui.space()
+                    ui.button(icon='delete', on_click= lambda: delete_step(steps, container, num))
+    return steps
 
 def ingredient_item(ingrs, num, container):
     with container:
@@ -71,7 +96,7 @@ def ingredient_item(ingrs, num, container):
                 if num > 0:
                     ui.space()
                     ui.button(icon='delete', on_click= lambda: delete_ingredient(ingrs, container, num))
-    return ingr
+    return ingrs
 
 def ingredients_form(recipe):
     ingredients = []
@@ -79,35 +104,23 @@ def ingredients_form(recipe):
         with ui.column().classes('w-full') as container:
             if recipe is not None and recipe.ingredients != []:
                 for i in range(len(recipe.ingredients)):
-                    ingredients.append(ingredient_item(recipe.ingredients, i, container))          
+                    ingredients = ingredient_item(recipe.ingredients, i, container)        
             else:
-                with ui.card().classes('w-full'):
-                    ui.label(f'Ingrediente 1')
-                    ingredients.append(ingredient_item(ingredients, 0, container))
+                ingredients = ingredient_item(ingredients, 0, container)
         add_button(add_ingredient, ingredients, container)
-            
     return ingredients
 
 
 def steps_form(recipe):
     steps = []
     with ui.card().classes('w-full'):
-        with ui.column().classes('w-full'):
+        with ui.column().classes('w-full') as container:
             if recipe is not None and recipe.steps != []:
                 for i in range(len(recipe.steps)):
-                    with ui.card().classes('w-full'):
-                        ui.label(f'Passo {i+1}')
-                        ui.textarea(value=recipe.steps[i]).classes('w-full').on("update:model-value", lambda e: ui.notify(e.args))
-                        with ui.row().classes('w-full'):
-                            ui.space
-                            ui.button(icon='delete', on_click= lambda: delete_step())
+                    steps = step_item(recipe.steps, i, container)
             else:
-                with ui.card().classes('w-full'):
-                    ui.label(f'Passo 1')
-                    ui.textarea().classes('w-full').on("update:model-value", lambda e: ui.notify(e.args))
-            with ui.row().classes('w-full'):
-                ui.space()
-                ui.button(icon='add', on_click= lambda: add_step())
+                steps = step_item(steps, 0, container)
+        add_button(add_step, steps, container)
     return steps
 
 def modifica_ricetta_page(recipe):
