@@ -16,7 +16,18 @@ class Recipe:
     #TODO implement setters
     def set_name(self, name):
         self.name = name
+
+    def set_ingredients(self, ingredients):
+        self.ingredients = ingredients    
     
+    def set_serves(self, serves):
+        self.serves = serves   
+    
+    def set_steps(self, steps):
+        self.steps = steps   
+    
+    def set_course(self, course):
+        self.course = course   
 
 
 

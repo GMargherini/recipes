@@ -1,6 +1,7 @@
 from nicegui import app, ui
-from pages.ricette import ricette_page, get_recipe, get_new_id
+from data.database import get_recipe, get_new_id
 from pages.ricetta import ricetta_page, nuova_ricetta_page, modifica_ricetta_page
+from pages.ricette import ricette_page
 
 
 @ui.page('/ricette')
@@ -46,7 +47,7 @@ def navigation_bar(title: str = ''):
 
 def main():
     ui.navigate.to('/ricette')
-    ui.run(title='Ricette', favicon='')
+    ui.run(title='Ricette', favicon='🍽️')
 
 if __name__ in {"__main__","__mp_main__"}:
     main()
