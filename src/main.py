@@ -1,5 +1,5 @@
 from nicegui import app, ui
-from data.database import get_recipe, get_new_id
+from data.database import Database
 from pages.ricetta import ricetta_page, nuova_ricetta_page, modifica_ricetta_page
 from pages.ricette import ricette_page
 
@@ -11,20 +11,20 @@ def ricette():
 
 @ui.page('/ricetta/{recipe_id}')
 def ricetta(recipe_id):
-    recipe = get_recipe(recipe_id)
+    recipe = Database().get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
     ricetta_page(recipe)
 
 @ui.page('/ricetta/{recipe_id}/modifica')
 def modifica_ricetta(recipe_id):
-    recipe = get_recipe(recipe_id)
+    recipe = Database().get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
     modifica_ricetta_page(recipe)
 
 @ui.page('/ricette/nuova')
 def nuova_ricetta():
     navigation_bar('Nuova Ricetta')
-    nuova_ricetta_page(get_new_id())
+    nuova_ricetta_page(Database().get_new_id())
 
 
 

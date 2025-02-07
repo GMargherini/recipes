@@ -38,4 +38,7 @@ class Recipe:
         ingredients = [Ingredient.encode(i) for i in r.ingredients]
         return {'id':r.id, 'name':r.name, 'ingredients':ingredients, 'serves':r.serves, 'steps':r.steps, 'course':r.course}
 
+    def __repr__(self):
+        return f'({self.id}, {self.name})'
+
     

@@ -20,3 +20,6 @@ class Ingredient:
     
     def encode(i):
         return {'name':i.name, 'quantity':i.quantity, 'unit':i.unit}
+        
+    def __repr__(self):
+        return f'({self.name}, {self.quantity}, {self.unit})'
