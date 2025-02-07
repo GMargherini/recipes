@@ -1,0 +1,11 @@
+services:
+  app:
+    build: 
+      context: .
+      args:
+        data_path: 
+          "recipes.json"
+    ports: 
+      - "8080:8080"
+    volumes:
+      - ".:/app"

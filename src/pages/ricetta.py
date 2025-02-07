@@ -3,15 +3,15 @@ from data.recipe import Recipe
 from data.ingredient import Ingredient
 from data.database import Database
 
-def remove_recipe(recipe_id):
-    Database().delete_recipe(recipe_id)
+def remove_recipe(db, recipe_id):
+    db.delete_recipe(recipe_id)
     ui.navigate.to(f'/ricette/')
 
-def ricetta_page(recipe):
+def ricetta_page(db, recipe):
     with ui.row().classes('w-full'):
         ui.space()
         ui.button(icon='edit', on_click= lambda: ui.navigate.to(f'/ricetta/{recipe.id}/modifica'))
-        ui.button(icon='delete', on_click= lambda: remove_recipe(recipe.id))
+        ui.button(icon='delete', on_click= lambda: remove_recipe(db, recipe.id))
     with ui.card().classes('w-full'):
         with ui.column():
             ui.label(recipe.name.title()).classes('text-2xl')
@@ -29,8 +29,7 @@ def ricetta_page(recipe):
             for s in recipe.steps:
                 ui.label(s)
 
-def save_recipe(recipe):
-    db = Database()
+def save_recipe(db, recipe):
     db.set_recipe(recipe)
     db.save_recipes()
     ui.notify('Ricetta Salvata')
@@ -119,10 +118,10 @@ def steps_form(recipe):
         add_button(step_item, steps, container)
     recipe.set_steps(steps)
 
-def modifica_ricetta_page(recipe):
-    nuova_ricetta_page(recipe.id, recipe)
+def modifica_ricetta_page(db, recipe):
+    nuova_ricetta_page(db, recipe.id, recipe)
 
-def nuova_ricetta_page(new_id, recipe=None):
+def nuova_ricetta_page(db, new_id, recipe=None):
     r = Recipe(new_id)
     if recipe is not None:
         r.name = recipe.name
@@ -148,4 +147,4 @@ def nuova_ricetta_page(new_id, recipe=None):
 
     with ui.row().classes('w-full'):
         ui.space()
-        ui.button(icon='save', on_click= lambda: save_recipe(r))
+        ui.button(icon='save', on_click= lambda: save_recipe(db, r))

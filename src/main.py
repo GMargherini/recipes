@@ -16,20 +16,20 @@ def ricetta(recipe_id):
     global db
     recipe = db.get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
-    ricetta_page(recipe)
+    ricetta_page(db, recipe)
 
 @ui.page('/ricetta/{recipe_id}/modifica')
 def modifica_ricetta(recipe_id):
     global db
     recipe = db.get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
-    modifica_ricetta_page(recipe)
+    modifica_ricetta_page(db, recipe)
 
 @ui.page('/ricette/nuova')
 def nuova_ricetta():
     global db
     navigation_bar('Nuova Ricetta')
-    nuova_ricetta_page(db.get_new_id())
+    nuova_ricetta_page(db, db.get_new_id())
 
 
 
