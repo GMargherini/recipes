@@ -1,8 +1,8 @@
 from nicegui import ui
 from data.database import Database
 
-def ricette_page():
-    recipes = Database().get_recipes_refs()
+def ricette_page(db):
+    recipes = db.get_recipes_refs()
     with ui.row().classes('w-full'):
         ui.space()
         ui.button(icon='add', on_click= lambda: ui.navigate.to('/ricette/nuova'))

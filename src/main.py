@@ -2,29 +2,34 @@ from nicegui import app, ui
 from data.database import Database
 from pages.ricetta import ricetta_page, nuova_ricetta_page, modifica_ricetta_page
 from pages.ricette import ricette_page
+import sys
 
+global db
 
 @ui.page('/ricette')
 def ricette():
     navigation_bar('Ricette')
-    ricette_page()
+    ricette_page(db)
 
 @ui.page('/ricetta/{recipe_id}')
 def ricetta(recipe_id):
-    recipe = Database().get_recipe(recipe_id)
+    global db
+    recipe = db.get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
     ricetta_page(recipe)
 
 @ui.page('/ricetta/{recipe_id}/modifica')
 def modifica_ricetta(recipe_id):
-    recipe = Database().get_recipe(recipe_id)
+    global db
+    recipe = db.get_recipe(recipe_id)
     navigation_bar(recipe.name.title())
     modifica_ricetta_page(recipe)
 
 @ui.page('/ricette/nuova')
 def nuova_ricetta():
+    global db
     navigation_bar('Nuova Ricetta')
-    nuova_ricetta_page(Database().get_new_id())
+    nuova_ricetta_page(db.get_new_id())
 
 
 
@@ -37,9 +42,12 @@ def navigation_bar(title: str = ''):
         ui.label(title).classes('text-2xl truncate flex-[2] hover:cursor-default').tooltip(title)
         ui.icon('home').on('click', lambda: ui.navigate.to(f'/ricette')).classes(icons).tooltip('Home')
 
-def main():
+def main(path):
+    global db
+    db = Database(path)
     ui.navigate.to('/ricette')
-    ui.run(title='Ricette', favicon='🍽️')
+    ui.run(title='Ricette', favicon='🍽️', port=8080)
 
 if __name__ in {"__main__","__mp_main__"}:
-    main()
+    path = sys.argv[1] if len(sys.argv) > 1 else 'recipes.json'
+    main(path)

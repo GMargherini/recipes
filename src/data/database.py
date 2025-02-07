@@ -4,8 +4,9 @@ from data.ingredient import Ingredient
 from typing import List, Dict, Any
 
 class Database():
-    def __init__(self):
-        self._recipes = Database.import_recipes()
+    def __init__(self, path):
+        self.path = path
+        self._recipes = Database.import_recipes(path)
 
     def as_dict(obj) -> Dict[str, Any]:
         if 'ingredients' in obj:
@@ -17,7 +18,7 @@ class Database():
         else:
             return obj
 
-    def import_recipes(path='recipes.json') -> List[Recipe]:
+    def import_recipes(path) -> List[Recipe]:
         with open(path) as file:
             recipes = json.load(file, object_hook=Database.as_dict)
             return recipes
@@ -43,12 +44,12 @@ class Database():
             save_recipes()
 
     def get_recipes_refs(self):
-        self._recipes = Database.import_recipes()
+        self._recipes = Database.import_recipes(self.path)
         return [{'id':r['id'], 'name':r['name'], 'course':r['course']} for r in self._recipes]
 
     def get_new_id(self):
         return len(self._recipes)+1
 
-    def save_recipes(self, path='recipes.json'):
-        with open(path, mode='w') as file:
+    def save_recipes(self):
+        with open(self.path, mode='w') as file:
             json.dump(self._recipes, file)
