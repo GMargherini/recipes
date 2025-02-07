@@ -41,7 +41,7 @@ class Database():
         for r in self._recipes:
             if r['id'] == recipe_id:
                 self._recipes.remove(r)
-            save_recipes()
+            self.save_recipes()
 
     def get_recipes_refs(self):
         self._recipes = Database.import_recipes(self.path)
