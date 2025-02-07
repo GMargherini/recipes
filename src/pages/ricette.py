@@ -7,8 +7,8 @@ def ricette_page(db):
         ui.space()
         ui.button(icon='add', on_click= lambda: ui.navigate.to('/ricette/nuova'))
     columns = [
-        {'HeaderName': 'Nome', 'field': 'name', 'filter': 'agTextColumnFilter'},
-        {'HeaderName': 'Portata', 'field': 'course', 'filter': "agSetColumnFilter"}
+        {'headerName': 'Nome', 'field': 'name', 'filter': 'agTextColumnFilter'},
+        {'headerName': 'Portata', 'field': 'course', 'filter': "agSetColumnFilter"}
     ]
     table = ui.aggrid({'columnDefs': columns, 'rowData': recipes, 'rowSelection': 'single'}, theme='quartz') \
         .classes('w-full h-[80vh]') \
