@@ -15,6 +15,10 @@ def ricette():
 def ricetta(recipe_id):
     global db
     recipe = db.get_recipe(recipe_id)
+    if recipe is None:
+        ui.navigate.to("/ricette")
+        ui.notify("Ricetta non trovata")
+        return
     navigation_bar(recipe.name.title())
     ricetta_page(db, recipe)
 
@@ -22,6 +26,10 @@ def ricetta(recipe_id):
 def modifica_ricetta(recipe_id):
     global db
     recipe = db.get_recipe(recipe_id)
+    if recipe is None:
+        ui.navigate.to("/ricette")
+        ui.notify("Ricetta non trovata")
+        return
     navigation_bar(recipe.name.title())
     modifica_ricetta_page(db, recipe)
 
