@@ -31,7 +31,6 @@ def ricetta_page(db, recipe):
 
 def save_recipe(db, recipe):
     db.set_recipe(recipe)
-    db.save_recipes()
     ui.notify('Ricetta Salvata')
     ui.navigate.to(f'/ricetta/{recipe.id}')
 
