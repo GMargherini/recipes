@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 
 class Recipe:
 
-    courses = ['antipasto', 'primo', 'secondo', 'contorno', 'dolce', 'piatto unico']
+    courses = ['entree', 'first course', 'second course', 'side', 'dessert', 'main course']
 
     def __init__(self, id: int =0, name: str ='', ingredients: List[Ingredient] = [], serves: int =0, steps: List[str] = [], course: str =''):
         self.id = id

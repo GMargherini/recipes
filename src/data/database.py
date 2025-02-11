@@ -5,7 +5,7 @@ from typing import List, Dict, Any
 import pymongo
 
 class Database():
-    def __init__(self, path):
+    def __init__(self):
         myclient = pymongo.MongoClient("mongodb://mongodb:27017/")
         mydb = myclient["database"]
         self.recs = mydb["recipes"]
