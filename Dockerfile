@@ -10,6 +10,6 @@ EXPOSE 8080
 RUN useradd app
 USER app
 
-ARG data_path
+ARG language
 
-CMD python /app/src/main.py $data_path
+CMD python /app/src/main.py $language
