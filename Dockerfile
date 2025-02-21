@@ -12,4 +12,4 @@ USER app
 
 ARG language
 
-CMD ["python", "/app/src/main.py", "$language"]
+CMD ["python", "/app/src/main.py", "$(language)"]

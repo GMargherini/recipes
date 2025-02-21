@@ -58,5 +58,5 @@ def main(lang):
     ui.run(title=translation[lang]['recipes'].title(), favicon='🍽️', port=8080)
 
 if __name__ in {"__main__","__mp_main__"}:
-    lang = sys.argv[1] if len(sys.argv) > 1 else 'en'
+    lang = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in translation.keys() else 'en'
     main(lang)
