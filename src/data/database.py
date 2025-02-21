@@ -16,7 +16,10 @@ class Database():
         return Recipe.decode(res) if res is not None else None 
 
     def set_recipe(self, recipe):
-        self.recs.insert_one(Recipe.encode(recipe))
+        if self.recs.find_one({"id":int(recipe.id)}):
+            self.recs.replace_one({"id":int(recipe.id)}, Recipe.encode(recipe))
+        else:
+            self.recs.insert_one(Recipe.encode(recipe))
 
     def delete_recipe(self, recipe_id):
         self.recs.delete_one({"id": recipe_id})
