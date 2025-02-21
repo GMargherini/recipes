@@ -140,7 +140,7 @@ def new_recipe_page(lang, db, new_id, recipe=None):
         with ui.row():
             trasnlated_courses = [translation[lang][c] for c in Recipe.courses]
             ui.label(translation[lang]["course"])
-            ui.select(trasnlated_courses, value=(translation[lang][r.course.lower()] if r.course != '' else translation[lang]['entree'])).on("update:model-value", lambda e: r.set_course(e.args['label']))
+            ui.select(trasnlated_courses, value=(translation[lang][r.course.lower()] if r.course != '' else translation[lang]['entree'])).on("update:model-value", lambda e: r.set_course(list(translation[lang].keys())[list(translation[lang].values()).index(e.args['label'])]))
 
     ingredients_form(lang, r)
 
