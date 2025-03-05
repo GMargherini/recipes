@@ -2,13 +2,14 @@ services:
   app:
     build: 
       context: .
-      args:
-        language: 
-          "it"
     ports: 
       - "8080:8080"
     volumes:
       - ".:/app"
+    environment:
+      LANGUAGE: "it"
+      BASE_URL: "/recipe-book"
+    
   mongodb:
     image: "mongo"
     ports:

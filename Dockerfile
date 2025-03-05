@@ -10,6 +10,7 @@ EXPOSE 8080
 RUN useradd app
 USER app
 
-ARG language
+env LANGUAGE
+env BASE_URL
 
-CMD ["python", "/app/src/main.py", "$(language)"]
+CMD ["python", "/app/src/main.py"]
