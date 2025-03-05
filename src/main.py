@@ -8,11 +8,6 @@ import os
 
 global db
 
-@ui.page('/{base_url}')
-def base(base_url):
-    go_home()
-
-
 @ui.page('/{base_url}/{lang}/recipes')
 def recipes(base_url, lang):
     navigation_bar(base_url, lang, translation[lang]["recipes"].title())
@@ -57,13 +52,6 @@ def navigation_bar(base_url, lang, title: str = ''):
         ui.label(title).classes('text-2xl truncate flex-[2] hover:cursor-default').tooltip(title)
         ui.icon('home').on('click', lambda: ui.navigate.to(f'/{base_url}/{lang}/recipes')).classes(icons).tooltip('Home')
 
-def go_home():
-    base_url = os.environ['BASE_URL'] if os.environ['BASE_URL'] else ''
-    if base_url and not base_url.startswith('/'):
-        base_url = '/' + base_url
-    lang = os.environ['LANGUAGE'] if os.environ['LANGUAGE'] and os.environ['LANGUAGE'] in translation.keys() else 'en'
-    ui.navigate.to(f'/{base_url}/{lang}/recipes')
-
 def main(lang, base_url):
     global db
     db = Database()
@@ -75,5 +63,4 @@ if __name__ in {"__main__","__mp_main__"}:
     if base_url:
         base_url = base_url.replace('/', '')
     lang = os.environ['LANGUAGE'] if os.environ['LANGUAGE'] and os.environ['LANGUAGE'] in translation.keys() else 'en'
-    print(base_url, lang)
     main(lang, base_url)
