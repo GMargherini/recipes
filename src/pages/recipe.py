@@ -4,14 +4,14 @@ from data.ingredient import Ingredient
 from data.database import Database
 from translations import translation
 
-def remove_recipe(base_url, lang, db, recipe_id):
+def remove_recipe(lang, db, recipe_id):
     db.delete_recipe(recipe_id)
-    ui.navigate.to(f'/{base_url}/{lang}/recipes/')
+    ui.navigate.to(f'/{lang}/recipes/')
 
-def recipe_page(base_url, lang, db, recipe):
+def recipe_page(lang, db, recipe):
     with ui.row().classes('w-full'):
         ui.space()
-        ui.button(icon='edit', on_click= lambda: ui.navigate.to(f'/{base_url}/{lang}/recipes/{recipe.id}/edit'))
+        ui.button(icon='edit', on_click= lambda: ui.navigate.to(f'/{lang}/recipes/{recipe.id}/edit'))
         ui.button(icon='delete', on_click= lambda: remove_recipe(lang, db, recipe.id))
     with ui.card().classes('w-full'):
         with ui.column():
@@ -30,10 +30,10 @@ def recipe_page(base_url, lang, db, recipe):
             for s in recipe.steps:
                 ui.label(s)
 
-def save_recipe(base_url, lang, db, recipe):
+def save_recipe(lang, db, recipe):
     db.set_recipe(recipe)
     ui.notify(translation[lang]["saved"])
-    ui.navigate.to(f'/{base_url}/{lang}/recipes/{recipe.id}')
+    ui.navigate.to(f'/{lang}/recipes/{recipe.id}')
 
 
 def add_item(lang, item, data, container):
@@ -118,10 +118,10 @@ def steps_form(lang, recipe):
         add_button(lang, step_item, steps, container)
     recipe.set_steps(steps)
 
-def edit_recipe_page(base_url, lang, db, recipe):
-    new_recipe_page(base_url, lang, db, recipe.id, recipe)
+def edit_recipe_page(lang, db, recipe):
+    new_recipe_page(lang, db, recipe.id, recipe)
 
-def new_recipe_page(base_url, lang, db, new_id, recipe=None):
+def new_recipe_page(lang, db, new_id, recipe=None):
     r = Recipe(new_id)
     if recipe is not None:
         r.name = recipe.name
@@ -148,4 +148,4 @@ def new_recipe_page(base_url, lang, db, new_id, recipe=None):
 
     with ui.row().classes('w-full'):
         ui.space()
-        ui.button(icon='save', on_click= lambda: save_recipe(base_url, lang, db, r))
+        ui.button(icon='save', on_click= lambda: save_recipe(lang, db, r))
